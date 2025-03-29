@@ -16,11 +16,29 @@ export default function handler(req, res) {
       .filter(line => line !== "");
 
     if (lines.length === 0) {
-      return res.status(200).send("Aucune réponse disponible 🤷‍♂️");
+      return res.status(200).send("Aucune citation disponible pour le moment 🤷‍♀️");
     }
 
-    const randomLine = lines[Math.floor(Math.random() * lines.length)];
-    res.status(200).send(randomLine);
+    const tag = req.query.tag?.toLowerCase();
+    const allowedTags = ["cul", "sexo", "copains", "trou", "143"];
+
+    let filtered = lines;
+
+    if (tag && allowedTags.includes(tag)) {
+      const tagPattern = `[${tag}]`;
+      filtered = lines.filter(line => line.toLowerCase().startsWith(tagPattern));
+    }
+
+    if (filtered.length === 0) {
+      filtered = lines;
+    }
+
+    const randomLine = filtered[Math.floor(Math.random() * filtered.length)];
+
+    // Retire le tag au début de la ligne
+    const response = randomLine.replace(/^\[.*?\]\s*/, "");
+
+    res.status(200).send(response);
   } catch (error) {
     res.status(500).send("Erreur serveur 😬 : " + error.message);
   }
