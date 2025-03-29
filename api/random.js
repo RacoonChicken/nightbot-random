@@ -15,12 +15,8 @@ export default function handler(req, res) {
       .map(line => line.trim())
       .filter(line => line !== "");
 
-    if (lines.length === 0) {
-      return res.status(200).send("Aucune citation disponible pour le moment 🤷‍♀️");
-    }
-
     const tag = req.query.tag?.toLowerCase();
-    const allowedTags = ["cul", "sexo", "copains", "trou", "143"];
+    const allowedTags = ["cul", "sexo", "copains", "trou", "143", "modo"];
 
     let filtered = lines;
 
@@ -35,7 +31,7 @@ export default function handler(req, res) {
 
     const randomLine = filtered[Math.floor(Math.random() * filtered.length)];
 
-    // Retire le tag au début de la ligne
+    // Supprime le tag au début de la ligne (ex : [cul] ou [modo])
     const response = randomLine.replace(/^\[.*?\]\s*/, "");
 
     res.status(200).send(response);
