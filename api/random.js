@@ -3,7 +3,7 @@ import path from "path";
 
 export default function handler(req, res) {
   try {
-    const filePath = path.join(__dirname, "reponses.txt");
+   const filePath = path.join(__dirname, "quotes.txt");
     const content = readFileSync(filePath, "utf8");
     const lines = content.split("\n").filter(line => line.trim() !== "");
     const randomLine = lines[Math.floor(Math.random() * lines.length)];
